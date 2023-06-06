@@ -32,7 +32,7 @@ export const ArtistSearch = () => {
         <SearchInput
           id="artist-search"
           label="Enter a genre to find artists"
-          onInputChange={(text) => setGenreSearchText(text)}
+          onChange={(text) => setGenreSearchText(text)}
           onOptionSelect={selectedGenre => {
             setGenreSearchText(selectedGenre.name);
             setSelectedGenre(selectedGenre);
@@ -42,9 +42,14 @@ export const ArtistSearch = () => {
         />
       </form>
       {(isLoadingGenres || (isLoadingArtists && selectedGenre?.id)) && <LoadingSpinner className="mt-12" />}
-      {!isLoadingArtists && selectedGenre?.id && artistData?.data?.map(artist => (
-          <div key={artist.id}>{artist.name}</div>
-      ))}      
+      {!isLoadingArtists && selectedGenre?.id && 
+        <>
+          <h3 className="mt-12 mb-8 font-bold">{selectedGenre.name} Artists</h3>
+          {artistData?.data?.map(artist => (
+            <div key={artist.id}>{artist.name}</div>
+          ))}
+        </>
+      }      
     </div>
   );
 }
