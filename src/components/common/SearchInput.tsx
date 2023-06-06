@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { Genre } from "../../api/api";
 
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
     id: string;
     label?: string;
-    searchOptions?: string[];
+    searchOptions?: Genre[];
     onInputChange: (text: string) => void;
-    onOptionSelect?: (text: string) => void;
+    onOptionSelect?: (option: Genre) => void;
     value: string | number;
 }
 
@@ -41,17 +42,17 @@ export const SearchInput = ({ label, id, searchOptions = [], onInputChange, onOp
                 }}
                 {...props}
             /> 
-            <div className={`absolute top-full bg-black text-white w-full p-2 ${showSearchOptions && !!searchOptions.length ? 'visible' : 'hidden'}`}>
-                {searchOptions?.map(text => (
-                    <div 
-                        key={text}
+            <div className={`absolute top-full bg-black text-white w-full p-2 z-10 max-h-64 overflow-auto ${showSearchOptions && !!searchOptions.length ? 'visible' : 'hidden'}`}>
+                {searchOptions?.map(option => (
+                    <div
+                        key={option.id}
                         className="p-2 hover:bg-gray-700 cursor-pointer"
                         onClick={() => {
-                            onOptionSelect && onOptionSelect(text);
+                            onOptionSelect && onOptionSelect(option);
                             setShowSearchOptions(false);
                         }}
                     >
-                        {text}
+                        {option.name}
                     </div>
                 ))}
             </div>

@@ -1,23 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter} from "react-router-dom";
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import axios from 'axios';
 
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Routes} from "./Routes";
 
+// Configure axios defaults
+axios.defaults.baseURL = 'https://music.musicaudience.info/api/v1/music';
+axios.defaults.headers.common['Authorization'] = `apiKey 5db48e1f3a0a4580bad47849f1317bd0`;
+
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes />
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+          <Routes />
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
