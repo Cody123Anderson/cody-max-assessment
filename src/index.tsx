@@ -7,7 +7,7 @@ import axios from 'axios';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Routes} from "./Routes";
-import { StateProvider } from './store';
+import { StateProvider } from './api/store';
 
 // Configure axios defaults
 axios.defaults.baseURL = 'https://music.musicaudience.info/api/v1/music';

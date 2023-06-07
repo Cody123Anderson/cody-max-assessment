@@ -1,11 +1,5 @@
 import axios from 'axios'
 
-type Response<T> = {
-    data: T;
-    errors: Error[];
-    sucess: 0 | 1;
-}
-
 export type Genre = {
     id: number;
     parent_id: number;
@@ -26,10 +20,18 @@ export type Artist = {
     genres: ArtistGenre[];
 }
 
-export const fetchGenres = (queryString: string = ''): Promise<Response<Genre[]>> => {
-    return axios.get(`/genres?q=${queryString}`).then(res => res.data);
+export const fetchGenres = (queryString: string = ''): Promise<Genre[]> => {
+    return axios.get(`/genres?q=${queryString}`).then(res => res.data.data);
 }
 
-export const fetchArtistsByGenre = (genreId?: number): Promise<Response<Artist[]>> => {
-    return axios.get(`/genres/${genreId}/artists`).then(res => res.data);
+export const fetchArtistsByGenre = (id?: number): Promise<Artist[]> => {
+    return axios.get(`/genres/${id}/artists`).then(res => res.data.data);
+}
+
+export const fetchArtist = (id: number): Promise<Artist> => {
+    return axios.get(`/artists/${id}`).then(res => res.data.data[0]);
+}
+
+export const fetchSimilarArtists = (id: number): Promise<Artist[]> => {
+    return axios.get(`/artists/${id}/similar`).then(res => res.data.data);
 }

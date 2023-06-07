@@ -1,35 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
 
 import { fetchArtistsByGenre, fetchGenres } from "../api/api";
-import { ActionTypes, store } from "../store";
+import { ActionTypes, store } from "../api/store";
 import { ArtistCard } from "./common/ArtistCard";
 import { LoadingSpinner } from "./common/LoadingSpinner";
+import { Page } from "./common/Page";
 import { SearchInput } from "./common/SearchInput";
 
 export const ArtistSearch = () => {
   const {state: {selectedGenre}, dispatch} = useContext(store);
   const [genreSearchText, setGenreSearchText] = useState<string>(selectedGenre?.name || '');
 
-  const { isLoading: isLoadingGenres, data: genreData } = useQuery({
+  const { isLoading: isLoadingGenres, data: genres } = useQuery({
     queryKey: ['fetchGenres'],
     queryFn: () => fetchGenres(),
   });
 
-  const { isLoading: isLoadingArtists, data: artistData } = useQuery({
+  const { isLoading: isLoadingArtists, data: artists } = useQuery({
     queryKey: ['fetchArtistsByGenre', selectedGenre?.id],
     queryFn: () => fetchArtistsByGenre(selectedGenre?.id),
     enabled: !!selectedGenre?.id,
   });
 
-  const filteredGenres = genreData?.data?.filter(genre => genre.name.includes(genreSearchText));
+  const filteredGenres = genres?.filter(genre => genre.name.includes(genreSearchText));
 
   return (
-    <div className="p-8 max-w-5xl m-auto">
-      <div className="text-right">
-        <Link to="/my-list" className="text-blue-500 hover:underline">View My List</Link>
-      </div>
+    <Page showBackButton={false}>
       <form className="max-w-xs" onSubmit={(e: React.FormEvent) => e.preventDefault()}>
         <SearchInput
           id="artist-search"
@@ -47,11 +44,11 @@ export const ArtistSearch = () => {
       {!isLoadingArtists && selectedGenre?.id && 
         <>
           <h3 className="mt-12 mb-8 font-bold">{selectedGenre.name} Artists</h3>
-          {artistData?.data?.map(artist => (
+          {artists?.map(artist => (
             <ArtistCard key={artist.id} {...artist} />
           ))}
         </>
       }      
-    </div>
+    </Page>
   );
 }
