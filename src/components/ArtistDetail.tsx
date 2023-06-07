@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 import { fetchArtist, fetchSimilarArtists } from "../api/api";
 import { ArtistCard } from "./common/ArtistCard";
-import { Button } from "./common/Button";
 import { LoadingSpinner } from "./common/LoadingSpinner";
 import { MyListButton } from "./common/MyLIstButton";
 import { Page } from "./common/Page";
