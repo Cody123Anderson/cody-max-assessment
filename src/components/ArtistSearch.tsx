@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { fetchArtistsByGenre, fetchGenres, Genre } from "../api/api";
+import { fetchArtistsByGenre, fetchGenres } from "../api/api";
+import { ActionTypes, store } from "../store";
+import { ArtistCard } from "./common/ArtistCard";
 import { LoadingSpinner } from "./common/LoadingSpinner";
 import { SearchInput } from "./common/SearchInput";
 
 export const ArtistSearch = () => {
-  const [genreSearchText, setGenreSearchText] = useState<string>('');
-  const [selectedGenre, setSelectedGenre] = useState<Genre>();
+  const {state: {selectedGenre}, dispatch} = useContext(store);
+  const [genreSearchText, setGenreSearchText] = useState<string>(selectedGenre?.name || '');
 
   const { isLoading: isLoadingGenres, data: genreData } = useQuery({
     queryKey: ['fetchGenres'],
@@ -35,7 +37,7 @@ export const ArtistSearch = () => {
           onChange={(text) => setGenreSearchText(text)}
           onOptionSelect={selectedGenre => {
             setGenreSearchText(selectedGenre.name);
-            setSelectedGenre(selectedGenre);
+            dispatch({type: ActionTypes.UpdateSearchGenre, payload: selectedGenre});
           }}
           searchOptions={filteredGenres}
           value={genreSearchText}
@@ -46,7 +48,7 @@ export const ArtistSearch = () => {
         <>
           <h3 className="mt-12 mb-8 font-bold">{selectedGenre.name} Artists</h3>
           {artistData?.data?.map(artist => (
-            <div key={artist.id}>{artist.name}</div>
+            <ArtistCard key={artist.id} {...artist} />
           ))}
         </>
       }      

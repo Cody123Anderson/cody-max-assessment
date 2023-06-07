@@ -7,6 +7,7 @@ import axios from 'axios';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Routes} from "./Routes";
+import { StateProvider } from './store';
 
 // Configure axios defaults
 axios.defaults.baseURL = 'https://music.musicaudience.info/api/v1/music';
@@ -21,9 +22,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-          <Routes />
-      </BrowserRouter>
+      <StateProvider>
+        <BrowserRouter>
+            <Routes />
+        </BrowserRouter>
+      </StateProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );
