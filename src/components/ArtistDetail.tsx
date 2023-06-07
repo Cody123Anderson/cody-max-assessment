@@ -5,6 +5,7 @@ import { fetchArtist, fetchSimilarArtists } from "../api/api";
 import { ArtistCard } from "./common/ArtistCard";
 import { Button } from "./common/Button";
 import { LoadingSpinner } from "./common/LoadingSpinner";
+import { MyListButton } from "./common/MyLIstButton";
 import { Page } from "./common/Page";
 
 export const ArtistDetail = () => {
@@ -44,7 +45,7 @@ export const ArtistDetail = () => {
                     <div className="mb-2">Additional Genres:</div>
                     <div>{additionalGenreNames.join(', ') || 'None'}</div>
                   </div>
-                  <Button>Add</Button>
+                  <MyListButton {...artist} />
                 </div>
             </div>
             <h2 className="mt-12 font-medium">
